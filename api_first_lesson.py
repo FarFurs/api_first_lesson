@@ -1,13 +1,17 @@
 import requests
 
 
-url_template = 'http://wttr.dvmn.org/{}'
-params = {"MnqT": "","lang": "ru"}
+def main() -> None:
+    url_template = 'http://wttr.dvmn.org/{}'
+    lst = [{'location': 'svo', 'params': ''}, {'location': 'london', 'params': ''}, {'location': 'Cherepovets', 'params': {"MnqT": "","lang": "ru"}}]
 
-response_svo = requests.get(url_template.format('svo'))
-response_london = requests.get(url_template.format('london'))
-response_cherep = requests.get(url_template.format('Cherepovets'), params = params)
-
-print(response_svo.text)
-print(response_london.text)
-print(response_cherep.text)
+    for place in lst:
+        response = requests.get(url_template.format(place['location']), params=place['params'])
+        try: 
+            response.raise_for_status()
+            print(response.text)
+        except:
+            print(response.status_code)
+    
+if __name__ == '__main__':
+    main()
